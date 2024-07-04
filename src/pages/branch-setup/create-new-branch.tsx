@@ -77,12 +77,22 @@ const CreateNewBranch = () => {
     },
   });
 
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const createBranch = useCreateBranch();
 
+  useEffect(() => {
+    if (createBranch.isSuccess) {
+      setOpen(true);
+    }
+  }, [createBranch.isSuccess]);
+
   if (createBranch.isPending) {
     return <Loading open={true} />;
+  }
+
+  if (open) {
+    return <SuccessBox />;
   }
 
   return (

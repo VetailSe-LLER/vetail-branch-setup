@@ -16,7 +16,7 @@ import IconSave from "@/components/icons/IconSave";
 import ComboEdit from "@/components/ui/combobox-edit";
 import { useUpdateSubBranch } from "@/store/server/branch-setup/mutation";
 import Email from "@/assets/email.png";
-import IconLoading from "@/components/icons/IconLoading";
+import load from "@/assets/load.gif";
 const inter = Inter({ subsets: ["latin"] });
 
 export interface EditMainBranchProp {
@@ -366,9 +366,13 @@ const EditSubBranch = ({
             type="submit"
             variant="contained"
             fullWidth
-            startIcon={<IconSave />}
+            startIcon={updateBranch.isPending ? null : <IconSave />}
           >
-            သိမ်းဆည်းမည်
+            {updateBranch.isPending ? (
+              <Box component={"img"} src={load.src} width={30} alt="Loading" />
+            ) : (
+              "သိမ်းဆည်းမည်"
+            )}
           </Button>
         </Box>
       </Box>

@@ -16,6 +16,8 @@ import * as yup from "yup";
 import IconSave from "@/components/icons/IconSave";
 import ComboEdit from "@/components/ui/combobox-edit";
 import { useUpdateShop } from "@/store/server/branch-setup/mutation";
+import load from "@/assets/load.gif";
+
 // import { useUpdateBranch } from "@/store/server/branch-setup/mutation";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -360,9 +362,13 @@ const EditMainBranch = ({
             type="submit"
             variant="contained"
             fullWidth
-            startIcon={<IconSave />}
+            startIcon={updateBranch.isPending ? null : <IconSave />}
           >
-            သိမ်းဆည်းမည်
+            {updateBranch.isPending ? (
+              <Box component={"img"} src={load.src} width={30} alt="Loading" />
+            ) : (
+              "သိမ်းဆည်းမည်"
+            )}
           </Button>
         </Box>
       </Box>
