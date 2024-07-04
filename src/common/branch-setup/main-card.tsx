@@ -48,7 +48,7 @@ const MainCard = ({
         </Box>
         <Box
           component={"div"}
-          sx={{ padding: 0, margin: 0 }}
+          sx={{ padding: 0, margin: 0, cursor: "pointer" }}
           onClick={toggleDrawer(true)}
         >
           <IconEdit />

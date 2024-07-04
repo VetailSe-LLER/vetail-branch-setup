@@ -36,10 +36,18 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
           </Typography>
         </Box>
         <Box display={"flex"} gap={1} alignItems={"center"} component={"div"}>
-          <Box component={"div"} onClick={() => setEdit(true)}>
+          <Box
+            sx={{ cursor: "pointer" }}
+            component={"div"}
+            onClick={() => setEdit(true)}
+          >
             <IconEdit />
           </Box>
-          <Box component={"div"} onClick={() => setOpen(true)}>
+          <Box
+            sx={{ cursor: "pointer" }}
+            component={"div"}
+            onClick={() => setOpen(true)}
+          >
             <IconMinus />
           </Box>
         </Box>

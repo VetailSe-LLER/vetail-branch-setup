@@ -57,29 +57,29 @@ const EditMainBranch = ({
   } = useForm<EditMainBranchProp>({
     resolver: yupResolver(YupSchema),
     defaultValues: {
-      shop: "",
-      phone: "",
-      email: "",
-      map: "",
-      address: "",
-      township: "",
-      nearest: "",
+      shop: data.shopName,
+      phone: data.phoneNo,
+      email: data.email,
+      map: data.cityId, // assuming cityId is the correct value
+      address: data.shopAddress,
+      township: data.townShipId, // assuming townShipId is the correct value
+      nearest: data.landMark || "",
     },
   });
 
-  useEffect(() => {
-    if (data) {
-      reset({
-        shop: data.shopName,
-        phone: data.phoneNo,
-        email: data.email,
-        map: data.cityId, // assuming cityId is the correct value
-        address: data.shopAddress,
-        township: data.townShipId, // assuming townShipId is the correct value
-        nearest: data.landMark || "",
-      });
-    }
-  }, [data, reset]);
+  // useEffect(() => {
+  //   if (data) {
+  //     reset({
+  //       shop: data.shopName,
+  //       phone: data.phoneNo,
+  //       email: data.email,
+  //       map: data.cityId, // assuming cityId is the correct value
+  //       address: data.shopAddress,
+  //       township: data.townShipId, // assuming townShipId is the correct value
+  //       nearest: data.landMark || "",
+  //     });
+  //   }
+  // }, [data, reset]);
 
   const updateBranch = useUpdateShop();
 

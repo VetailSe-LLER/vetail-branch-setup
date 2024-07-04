@@ -137,6 +137,17 @@ const CreateNewBranch = () => {
                     name="shop"
                     resetField={resetField}
                   />
+                  <Box
+                    sx={{ fontSize: 12 }}
+                    display={"flex"}
+                    alignItems={"center"}
+                    justifyContent={"end"}
+                    pl={2}
+                    mt={1}
+                    component={"div"}
+                  >
+                    {field.value.length}/50
+                  </Box>
                   {errors.shop && (
                     <Box
                       fontSize={12}

@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState, FC, FocusEvent } from "react";
-import IconClose from "../icons/IconClose";
+import IconClose from "../../assets/close.png";
 import { UseFormResetField } from "react-hook-form";
 
 interface CustomTextFieldWithLimitProps {
@@ -123,8 +123,8 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
               {!field.value && endSection}
             </Typography>
             {resetField && field.value && name ? (
-              <Button onClick={() => resetField(name)}>
-                <IconClose />
+              <Button onClick={() => field.onChange("")}>
+                <img src={IconClose.src} width={20} alt="close" />
               </Button>
             ) : null}
           </InputAdornment>

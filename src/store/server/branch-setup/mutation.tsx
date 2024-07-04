@@ -97,7 +97,7 @@ export const useUpdateShop = () => {
   return useMutation({
     mutationFn: (payload: any) => updateShop(payload),
     onSuccess: () => {
-      query.invalidateQueries({ queryKey: ["branch-list"] });
+      query.invalidateQueries({ queryKey: ["main-branch-list"] });
     },
   });
 };

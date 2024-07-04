@@ -29,7 +29,7 @@ const ComboEdit = ({
     <Autocomplete
       id="country-select-demo"
       options={option}
-      isOptionEqualToValue={(option, value) => option.id === Number(value)}
+      // isOptionEqualToValue={(option, value) => option.id === Number(value)}
       getOptionLabel={(option) => option.label}
       value={option.find((opt) => opt.value === field.value) || null} // Ensure the value is set correctly
       onChange={(event, newValue) =>
