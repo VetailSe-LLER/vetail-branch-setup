@@ -31,7 +31,7 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
   maxLength,
   label,
   disabled = false,
-  icon = "",
+  icon,
   error = false,
   resetField,
   type = "text",
@@ -47,6 +47,8 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
       setLabelShrink(true);
     }
   }, [field.value]);
+
+  console.log(endSection, "end");
 
   return (
     <TextField
@@ -68,7 +70,7 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
       onFocus={() => setLabelShrink(true)}
       inputProps={{
         style: {
-          fontSize: "18px",
+          fontSize: "14px",
           fontWeight: "300",
           boxShadow: "none",
         },
@@ -96,11 +98,15 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
       }}
       InputLabelProps={{
         shrink: labelShrink,
+
         className: labelShrink
           ? undefined
           : icon
           ? "no-shrink"
           : "no-shrink-no-icon",
+        style: {
+          fontSize: "14px",
+        },
       }}
       InputProps={{
         startAdornment: (
@@ -111,12 +117,12 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
             {icon}
           </InputAdornment>
         ),
-        endAdornment: field.value && name && (
+        endAdornment: (
           <InputAdornment position="end">
             <Typography fontWeight="300" fontSize="10px" color="#929292">
               {!field.value && endSection}
             </Typography>
-            {resetField ? (
+            {resetField && field.value && name ? (
               <Button onClick={() => resetField(name)}>
                 <IconClose />
               </Button>

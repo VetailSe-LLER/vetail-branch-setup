@@ -5,11 +5,14 @@ import { Box, Button, Stack, useTheme } from "@mui/material";
 import React from "react";
 import shop from "@/assets/shop.png";
 import Image from "next/image";
+import { useMainBranchList } from "@/store/server/branch-setup/query";
 
 const MainCard = ({
   toggleDrawer,
+  data,
 }: {
   toggleDrawer: (newOpen: boolean) => () => void;
+  data: any;
 }) => {
   const theme = useTheme();
 
@@ -41,7 +44,7 @@ const MainCard = ({
         justifyContent={"space-between"}
       >
         <Box py={0} my={0} component={"h4"}>
-          ပင်ရင်း
+          {data?.shopName}
         </Box>
         <Box
           component={"div"}
@@ -67,7 +70,7 @@ const MainCard = ({
           fontSize={14}
           component={"p"}
         >
-          09974780273
+          {data?.phoneNo}
         </Box>
       </Stack>
       <Stack
@@ -86,7 +89,7 @@ const MainCard = ({
           fontSize={14}
           component={"p"}
         >
-          No.145, Baho Road, Wailuwon 2nd Street, Sanchaung, Yangon
+          {data?.shopAddress}
         </Box>
       </Stack>
     </Box>

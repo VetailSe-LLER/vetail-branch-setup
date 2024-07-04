@@ -2,9 +2,25 @@ import IconEdit from "@/components/icons/IconEdit";
 import IconFlag from "@/components/icons/IconFlag";
 import IconMenu from "@/components/icons/IconMenu";
 import IconMinus from "@/components/icons/IconMinus";
+import ConfirmModal from "@/components/ui/confirm-modal";
+import Drawer from "@/components/ui/drawer";
+import EditSubBranch from "@/pages/branch-setup/edit-sub-branch";
+import { useDeleteBranch } from "@/store/server/branch-setup/mutation";
 import { Box, Container, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 
 const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
+  const deleteBranch = useDeleteBranch();
+  const [open, setOpen] = useState(false);
+
+  const [edit, setEdit] = useState(false);
+
+  const toggleDrawer = (newOpen: boolean) => () => {
+    setEdit(newOpen);
+  };
+
+  console.log(branch, "branch");
+
   return (
     <Box
       component={"div"}
@@ -20,8 +36,12 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
           </Typography>
         </Box>
         <Box display={"flex"} gap={1} alignItems={"center"} component={"div"}>
-          <IconEdit />
-          <IconMinus />
+          <Box component={"div"} onClick={() => setEdit(true)}>
+            <IconEdit />
+          </Box>
+          <Box component={"div"} onClick={() => setOpen(true)}>
+            <IconMinus />
+          </Box>
         </Box>
       </Stack>
       <Box mx={"5px"} component={"ul"}>
@@ -44,6 +64,15 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
           </Box>
         </Box>
       </Box>
+      <ConfirmModal
+        open={open}
+        setOpen={setOpen}
+        onClick={() => deleteBranch.mutate(branch.id)}
+      />
+
+      <Drawer open={edit} toggleDrawer={toggleDrawer}>
+        {branch && <EditSubBranch data={branch} setOpen={setEdit} />}
+      </Drawer>
     </Box>
   );
 };

@@ -18,13 +18,21 @@ import {
   TextField,
 } from "@mui/material";
 import { Inter } from "next/font/google";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import IconError from "@/components/icons/IconError";
 import Combobox from "@/components/ui/combobox";
 import Link from "next/link";
+import { useCreateBranch } from "@/store/server/branch-setup/mutation";
+import AlertBox from "@/components/ui/alert-box";
+import IconCheck from "@/components/icons/IconCheck";
+import IconMinus from "@/components/icons/IconMinus";
+import { citydata } from "@/assets/citydata";
+import { townShipData } from "@/assets/townShipData";
+import Loading from "@/components/ui/Loading";
+import SuccessBox from "@/components/ui/success-box";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,18 +41,18 @@ export interface CreateNewBranchProp {
   phone: string;
   email?: string;
   map: string;
-  // township: string;
+  township: string;
   address: string;
   nearest?: string;
 }
 
 // yup schema
 const YupSchema = yup.object({
-  shop: yup.string().required("ဆိုင်ခွဲအမည်ထည့်ရန် လိုအပ်ပါသည်"),
+  shop: yup.string().required("ဆိုင်ခွဲအမည်ထည့်ရန် လိုအပ်ပါသည်").min(1).max(50),
   phone: yup.string().required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်"),
   email: yup.string().email(),
   map: yup.string().required("မြို့‌ရွေးချယ်ရန် လိုအပ်ပါသည်"),
-  // township: yup.string().required("မြို့‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
+  township: yup.string().required("မြို့‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
   address: yup.string().required("လိပ်စာအပြည့်အစုံထည့်ရန် လိုအပ်ပါသည်"),
   nearest: yup.string(),
 });
@@ -64,10 +72,18 @@ const CreateNewBranch = () => {
       email: "",
       map: "",
       address: "",
-      // township: "",
+      township: "",
       nearest: "",
     },
   });
+
+  // const [open, setOpen] = useState(false);
+
+  const createBranch = useCreateBranch();
+
+  if (createBranch.isPending) {
+    return <Loading open={true} />;
+  }
 
   return (
     <Container
@@ -84,12 +100,26 @@ const CreateNewBranch = () => {
         </Box>
       </Stack>
       <Box
-        display={"flex"}
+        display="flex"
         flexDirection={"column"}
         gap={2}
         component={"form"}
         marginTop={3}
-        onSubmit={handleSubmit((value) => console.log("value", value))}
+        onSubmit={handleSubmit((value) =>
+          createBranch.mutate({
+            shopId: 278,
+            branchName: value.shop,
+            phoneNo: value.phone,
+            email: value.email ? value.email : "",
+            cityId: citydata.filter((city) => city.name === value.map)[0].id,
+            townshipId: townShipData.filter(
+              (town) => town.name === value.township
+            )[0].id,
+            landMark: value.nearest || "",
+            isEcommerce: false,
+            address: value.address,
+          })
+        )}
       >
         <Box component={"div"}>
           <Controller
@@ -171,15 +201,33 @@ const CreateNewBranch = () => {
             name="email"
             render={({ field }) => {
               return (
-                <CustomTextFiled
-                  resetField={resetField}
-                  icon={<IconEmail />}
-                  label="*အီးမေးလ်"
-                  endSection="အီးမေးလ်မရှိပါကထည့်ရန်မလိုပါ"
-                  maxLength={0}
-                  name="email"
-                  field={{ ...field, value: field.value ?? "" }}
-                />
+                <>
+                  <CustomTextFiled
+                    resetField={resetField}
+                    icon={<IconEmail />}
+                    label="*အီးမေးလ်"
+                    endSection="အီးမေးလ်မရှိပါကထည့်ရန်မလိုပါ"
+                    maxLength={0}
+                    name="email"
+                    error={!!errors.email}
+                    field={{ ...field, value: field.value ?? "" }}
+                  />
+                  {errors.email && (
+                    <Box
+                      fontSize={12}
+                      display={"flex"}
+                      width={"100%"}
+                      color={"red"}
+                      component={"div"}
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      gap={1}
+                      mt={1}
+                    >
+                      <IconError /> {errors.email.message}
+                    </Box>
+                  )}
+                </>
               );
             }}
           />
@@ -189,11 +237,12 @@ const CreateNewBranch = () => {
             control={control}
             name="map"
             render={({ field }) => {
-              console.log({ map: field.value });
-
               return (
                 <>
                   <Combobox
+                    option={citydata.map((city) => {
+                      return { label: city.name, value: city.id };
+                    })}
                     icon={<IconMapPin />}
                     labelInput="*မြို့ရွေးချယ်ပါ"
                     error={!!errors.map}
@@ -219,7 +268,7 @@ const CreateNewBranch = () => {
             }}
           />
         </Box>
-        {/* <Box component={"div"}>
+        <Box component={"div"}>
           <Controller
             control={control}
             name="township"
@@ -227,12 +276,15 @@ const CreateNewBranch = () => {
               return (
                 <>
                   <Combobox
+                    option={townShipData.map((town) => {
+                      return { label: town.name, value: town.id };
+                    })}
                     icon={<IconMapPin />}
                     labelInput="*မြို့နယ်ရွေးချယ်ပါ"
-                    error={!!errors.map}
+                    error={!!errors.township}
                     field={field}
                   />
-                  {errors.map && (
+                  {errors.township && (
                     <Box
                       fontSize={12}
                       display={"flex"}
@@ -244,14 +296,14 @@ const CreateNewBranch = () => {
                       gap={1}
                       mt={1}
                     >
-                      <IconError /> {errors.map.message}
+                      <IconError /> {errors.township.message}
                     </Box>
                   )}
                 </>
               );
             }}
           />
-        </Box> */}
+        </Box>
         <Box component={"div"}>
           <Controller
             control={control}
@@ -314,7 +366,7 @@ const CreateNewBranch = () => {
               errors.map ||
               errors.phone
                 ? 2
-                : 13,
+                : 5,
             height: 50,
 
             width: "100%",

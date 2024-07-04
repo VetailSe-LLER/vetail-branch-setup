@@ -1,4 +1,6 @@
-const IconEmail = () => {
+import React from "react";
+
+const IconEmai2 = () => {
   return (
     <svg
       width="24"
@@ -32,4 +34,4 @@ const IconEmail = () => {
   );
 };
 
-export default IconEmail;
+export default IconEmai2;

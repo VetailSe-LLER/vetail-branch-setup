@@ -1,4 +1,3 @@
-import IconEmail from "@/components/icons/IconEmail";
 import IconClose2 from "@/components/icons/IconClose2";
 import IconPhone from "@/components/icons/IconPhone";
 import IconShop from "@/components/icons/IconShop";
@@ -15,9 +14,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import IconSave from "@/components/icons/IconSave";
 import ComboEdit from "@/components/ui/combobox-edit";
-import { useUpdateShop } from "@/store/server/branch-setup/mutation";
-// import { useUpdateBranch } from "@/store/server/branch-setup/mutation";
-
+import { useUpdateSubBranch } from "@/store/server/branch-setup/mutation";
+import Email from "@/assets/email.png";
+import IconLoading from "@/components/icons/IconLoading";
 const inter = Inter({ subsets: ["latin"] });
 
 export interface EditMainBranchProp {
@@ -41,7 +40,7 @@ const YupSchema = yup.object({
   nearest: yup.string(),
 });
 
-const EditMainBranch = ({
+const EditSubBranch = ({
   setOpen,
   data,
 }: {
@@ -59,7 +58,7 @@ const EditMainBranch = ({
     defaultValues: {
       shop: "",
       phone: "",
-      email: "",
+      email: data.email,
       map: "",
       address: "",
       township: "",
@@ -70,18 +69,18 @@ const EditMainBranch = ({
   useEffect(() => {
     if (data) {
       reset({
-        shop: data.shopName,
+        shop: data.branchName,
         phone: data.phoneNo,
-        email: data.email,
+        email: data.email || "",
         map: data.cityId, // assuming cityId is the correct value
-        address: data.shopAddress,
-        township: data.townShipId, // assuming townShipId is the correct value
+        address: data.address,
+        township: data.townshipId, // assuming townShipId is the correct value
         nearest: data.landMark || "",
       });
     }
   }, [data, reset]);
 
-  const updateBranch = useUpdateShop();
+  const updateBranch = useUpdateSubBranch();
 
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>
@@ -108,14 +107,15 @@ const EditMainBranch = ({
         onSubmit={handleSubmit((value) =>
           updateBranch.mutate(
             {
-              ShopId: 278,
-              ShopName: value.shop,
-              PhoneNo: value.phone,
-              Email: value.email,
-              CityId: Number(value.map),
-              TownshipId: Number(value.township),
-              Address: value.address,
-              LandMark: value.nearest,
+              branchId: data.id,
+              branchName: value.shop,
+              phoneNo: value.phone,
+              email: value.email,
+              cityId: Number(value.map),
+              townshipId: Number(value.township),
+              address: value.address,
+              isEcommerce: false,
+              landMark: value.nearest,
             },
             {
               onSuccess: () => {
@@ -197,35 +197,41 @@ const EditMainBranch = ({
         <Box component={"div"}>
           <Controller
             control={control}
+            defaultValue=""
             name="email"
-            render={({ field }) => (
-              <>
-                <CustomTextFiled
-                  resetField={resetField}
-                  icon={<IconEmail />}
-                  label="အီးမေး"
-                  maxLength={0}
-                  field={field}
-                  error={!!errors.email}
-                  name="email"
-                />
-                {errors.email && (
-                  <Box
-                    fontSize={12}
-                    display={"flex"}
-                    width={"100%"}
-                    color={"red"}
-                    component={"div"}
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    gap={1}
-                    mt={1}
-                  >
-                    <IconError /> {errors.email.message}
-                  </Box>
-                )}
-              </>
-            )}
+            render={({ field }) => {
+              return (
+                <>
+                  <CustomTextFiled
+                    resetField={resetField}
+                    icon={
+                      <img src={Email.src} style={{ width: 25 }} alt="hello" />
+                    }
+                    label="*အီးမေးလ်"
+                    endSection="အီးမေးလ်မရှိပါကထည့်ရန်မလိုပါ"
+                    maxLength={0}
+                    name="email"
+                    error={!!errors.email}
+                    field={{ ...field, value: field.value ?? "" }}
+                  />
+                  {errors.email && (
+                    <Box
+                      fontSize={12}
+                      display={"flex"}
+                      width={"100%"}
+                      color={"red"}
+                      component={"div"}
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      gap={1}
+                      mt={1}
+                    >
+                      <IconError /> {errors.email.message}
+                    </Box>
+                  )}
+                </>
+              );
+            }}
           />
         </Box>
         <Box component={"div"}>
@@ -236,7 +242,7 @@ const EditMainBranch = ({
               <>
                 <ComboEdit
                   icon={<IconShop />}
-                  labelInput="မြို့"
+                  labelInput="*မြို့‌ရွေးချယ်ပါ"
                   error={!!errors.map}
                   field={field}
                   option={citydata.map((item) => ({
@@ -271,7 +277,7 @@ const EditMainBranch = ({
               <>
                 <ComboEdit
                   icon={<IconShop />}
-                  labelInput="မြို့နယ်"
+                  labelInput="*မြို့နယ်‌ရွေးချယ်ပါ"
                   error={!!errors.township}
                   field={field}
                   option={townShipData.map((item) => ({
@@ -307,7 +313,7 @@ const EditMainBranch = ({
                 <CustomTextFiled
                   resetField={resetField}
                   icon={<IconShop />}
-                  label="*ဆိုင်လိပ်စာ"
+                  label="*လိပ်စာအပြည့််အစုံ"
                   maxLength={0}
                   field={field}
                   error={!!errors.address}
@@ -370,4 +376,4 @@ const EditMainBranch = ({
   );
 };
 
-export default EditMainBranch;
+export default EditSubBranch;

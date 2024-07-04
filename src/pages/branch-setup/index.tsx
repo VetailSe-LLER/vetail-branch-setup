@@ -4,12 +4,23 @@ import IconLeftArrow from "@/components/icons/IconLeftArrow";
 import IconPlus from "@/components/icons/IconPlus";
 import Drawer from "@/components/ui/drawer";
 
-import { Box, Button, Container, Stack, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Skeleton,
+  Stack,
+  useTheme,
+} from "@mui/material";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import React from "react";
 import EditMainBranch from "./edit-main-branch";
-import { useBranchList } from "@/store/server/branch-setup/query";
+import {
+  useBranchList,
+  useMainBranchList,
+} from "@/store/server/branch-setup/query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +33,9 @@ const index = () => {
     setOpen(newOpen);
   };
 
-  const { data } = useBranchList(278);
+  const { data, isLoading } = useBranchList(278);
+
+  const { data: mainBranch, isLoading: load } = useMainBranchList(278);
 
   return (
     <Container className={inter.className} maxWidth="sm">
@@ -31,8 +44,13 @@ const index = () => {
         <Box component={"p"}>Branch Setup</Box>
       </Stack>
       {/* main card */}
-      <MainCard toggleDrawer={toggleDrawer} />
-
+      {mainBranch && !load ? (
+        <MainCard data={mainBranch} toggleDrawer={toggleDrawer} />
+      ) : (
+        <>
+          <Skeleton variant="rounded" width={"100%"} height={130} />
+        </>
+      )}
       {/* create-new-branch */}
       <Box px={2}>
         <Link href={"/branch-setup/create-new-branch"}>
@@ -53,12 +71,29 @@ const index = () => {
       </Box>
 
       {/* SubCard */}
-      {data?.branchInfo.map((branch) => (
-        <SubCard branch={branch} />
-      ))}
+      {data && !isLoading ? (
+        <>
+          {data?.branchInfo.map((branch) => (
+            <SubCard branch={branch} />
+          ))}
+        </>
+      ) : (
+        <>
+          <Box mt={2} display={"flex"} flexDirection={"column"} gap={2}>
+            {[...Array(4)].map((_, idx) => (
+              <Skeleton
+                variant="rounded"
+                height={150}
+                key={idx}
+                width={"100%"}
+              />
+            ))}
+          </Box>
+        </>
+      )}
 
       <Drawer open={open} toggleDrawer={toggleDrawer}>
-        <EditMainBranch setOpen={setOpen} />
+        {mainBranch && <EditMainBranch data={mainBranch} setOpen={setOpen} />}
       </Drawer>
     </Container>
   );

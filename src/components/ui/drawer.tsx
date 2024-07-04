@@ -58,6 +58,7 @@ export default function Drawer({
           ".MuiDrawer-root > .MuiPaper-root": {
             height: `calc(50% - ${drawerBleeding}px)`,
             overflow: "visible",
+            overflowY: "auto",
           },
         }}
       />
@@ -81,7 +82,7 @@ export default function Drawer({
         }}
       >
         <Puller />
-        <Box component={"div"} p={3}>
+        <Box component={"div"} py={3} px={3}>
           {children}
         </Box>
       </SwipeableDrawer>

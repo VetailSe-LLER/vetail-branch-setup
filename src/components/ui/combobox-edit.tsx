@@ -10,7 +10,13 @@ interface ComboboxProp {
   option: any[];
 }
 
-const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
+const ComboEdit = ({
+  field,
+  error,
+  labelInput,
+  icon,
+  option,
+}: ComboboxProp) => {
   const [labelShrink, setLabelShrink] = useState(false);
 
   useEffect(() => {
@@ -18,16 +24,17 @@ const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
       setLabelShrink(true);
     }
   }, [field.value]);
-  // const option = [{ label: "Yangon", value: 260 }];
 
   return (
     <Autocomplete
       id="country-select-demo"
       options={option}
-      isOptionEqualToValue={(option, value) => option.label === value.label}
+      isOptionEqualToValue={(option, value) => option.id === Number(value)}
       getOptionLabel={(option) => option.label}
-      inputValue={field.value} // Ensure the value is set correctly
-      onInputChange={(event, newValue) => field.onChange(newValue)} // Handle change correctly
+      value={option.find((opt) => opt.value === field.value) || null} // Ensure the value is set correctly
+      onChange={(event, newValue) =>
+        field.onChange(newValue ? newValue.value : "")
+      } // Handle change correctly
       sx={{
         "& fieldset": {
           borderRadius: "10px",
@@ -104,4 +111,4 @@ const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
   );
 };
 
-export default Combobox;
+export default ComboEdit;
