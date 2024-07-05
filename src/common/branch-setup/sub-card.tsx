@@ -19,8 +19,6 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
     setEdit(newOpen);
   };
 
-  console.log(branch, "branch");
-
   return (
     <Box
       component={"div"}

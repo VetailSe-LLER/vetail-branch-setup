@@ -48,8 +48,6 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
     }
   }, [field.value]);
 
-  console.log(endSection, "end");
-
   return (
     <TextField
       // disabled={disabled}
