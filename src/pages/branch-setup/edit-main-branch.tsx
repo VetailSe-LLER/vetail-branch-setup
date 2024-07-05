@@ -60,13 +60,13 @@ const EditMainBranch = ({
   } = useForm<EditMainBranchProp>({
     resolver: yupResolver(YupSchema),
     defaultValues: {
-      shop: data.shopName,
-      phone: data.phoneNo,
-      email: data.email,
-      map: data.cityId, // assuming cityId is the correct value
-      address: data.shopAddress,
-      township: data.townShipId, // assuming townShipId is the correct value
-      nearest: data.landMark || "",
+      shop: data?.shopName,
+      phone: data?.phoneNo,
+      email: data?.email,
+      map: data?.cityId, // assuming cityId is the correct value
+      address: data?.shopAddress,
+      township: data?.townShipId, // assuming townShipId is the correct value
+      nearest: data?.landMark || "",
     },
   });
 

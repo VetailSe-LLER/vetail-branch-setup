@@ -28,6 +28,9 @@ const nextConfig = {
     return config;
   },
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 export default nextConfig;

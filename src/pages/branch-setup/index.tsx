@@ -75,8 +75,8 @@ const BranchSetup = () => {
       {/* SubCard */}
       {data && !isLoading ? (
         <>
-          {data?.branchInfo.map((branch) => (
-            <SubCard branch={branch} />
+          {data?.branchInfo.map((branch, index) => (
+            <SubCard branch={branch} key={index} />
           ))}
         </>
       ) : (

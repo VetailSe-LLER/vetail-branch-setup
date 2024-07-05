@@ -58,7 +58,7 @@ const EditSubBranch = ({
     defaultValues: {
       shop: "",
       phone: "",
-      email: data.email,
+      email: data?.email,
       map: "",
       address: "",
       township: "",
@@ -69,13 +69,13 @@ const EditSubBranch = ({
   useEffect(() => {
     if (data) {
       reset({
-        shop: data.branchName,
-        phone: data.phoneNo,
-        email: data.email || "",
-        map: data.cityId, // assuming cityId is the correct value
-        address: data.address,
-        township: data.townshipId, // assuming townShipId is the correct value
-        nearest: data.landMark || "",
+        shop: data?.branchName,
+        phone: data?.phoneNo,
+        email: data?.email || "",
+        map: data?.cityId, // assuming cityId is the correct value
+        address: data?.address,
+        township: data?.townshipId, // assuming townShipId is the correct value
+        nearest: data?.landMark || "",
       });
     }
   }, [data, reset]);
