@@ -8,9 +8,19 @@ interface ComboboxProp {
   labelInput: string;
   icon: ReactNode;
   option: any[];
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  disable?: boolean;
 }
 
-const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
+const Combobox = ({
+  field,
+  error,
+  labelInput,
+  setValue,
+  icon,
+  option,
+  disable = false,
+}: ComboboxProp) => {
   const [labelShrink, setLabelShrink] = useState(false);
 
   useEffect(() => {
@@ -27,7 +37,12 @@ const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
       isOptionEqualToValue={(option, value) => option.label === value.label}
       getOptionLabel={(option) => option.label}
       inputValue={field.value} // Ensure the value is set correctly
-      onInputChange={(event, newValue) => field.onChange(newValue)} // Handle change correctly
+      onInputChange={(event, newValue) => {
+        field.onChange(newValue);
+        if (newValue) {
+          setValue && setValue(newValue as string);
+        }
+      }} // Handle change correctly
       sx={{
         "& fieldset": {
           borderRadius: "10px",
@@ -49,6 +64,7 @@ const Combobox = ({ field, error, labelInput, icon, option }: ComboboxProp) => {
         <TextField
           {...params}
           label={labelInput}
+          disabled={disable}
           inputProps={{
             ...params.inputProps,
             autoComplete: "new-password", // Disable autocomplete and autofill

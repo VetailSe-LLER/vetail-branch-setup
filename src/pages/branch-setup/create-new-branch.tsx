@@ -29,10 +29,9 @@ import { useCreateBranch } from "@/store/server/branch-setup/mutation";
 import AlertBox from "@/components/ui/alert-box";
 import IconCheck from "@/components/icons/IconCheck";
 import IconMinus from "@/components/icons/IconMinus";
-import { citydata } from "@/assets/citydata";
-import { townShipData } from "@/assets/townShipData";
 import Loading from "@/components/ui/Loading";
 import SuccessBox from "@/components/ui/success-box";
+import { township, useCity } from "@/store/server/city-township/query";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -62,7 +61,7 @@ const CreateNewBranch = () => {
     control,
     handleSubmit,
     resetField,
-    watch,
+    getValues,
     formState: { errors },
   } = useForm<CreateNewBranchProp>({
     resolver: yupResolver(YupSchema),
@@ -78,8 +77,26 @@ const CreateNewBranch = () => {
   });
 
   const [open, setOpen] = useState(false);
+  const [cityId, setCityId] = useState<string>("");
+  const [townShipData, setTown] = useState<any[]>([]);
 
   const createBranch = useCreateBranch();
+
+  const { data: citydata, isLoading } = useCity();
+
+  const cityDataId =
+    cityId && citydata?.filter((city: any) => city.name === cityId)?.[0]?.id;
+
+  useEffect(() => {
+    if (cityDataId) {
+      const townData = async () => {
+        const data = await township(cityDataId);
+        setTown(data);
+        return data;
+      };
+      townData();
+    }
+  }, [cityDataId]);
 
   useEffect(() => {
     if (createBranch.isSuccess) {
@@ -121,8 +138,9 @@ const CreateNewBranch = () => {
             branchName: value.shop,
             phoneNo: value.phone,
             email: value.email ? value.email : "",
-            cityId: citydata.filter((city) => city.name === value.map)[0].id,
-            townshipId: townShipData.filter(
+            cityId: citydata?.filter((city: any) => city.name === value.map)[0]
+              .id,
+            townshipId: townShipData?.filter(
               (town) => town.name === value.township
             )[0].id,
             landMark: value.nearest || "",
@@ -261,7 +279,9 @@ const CreateNewBranch = () => {
               return (
                 <>
                   <Combobox
-                    option={citydata.map((city) => {
+                    disable={isLoading}
+                    setValue={setCityId}
+                    option={citydata?.map((city: any) => {
                       return { label: city.name, value: city.id };
                     })}
                     icon={<IconMapPin />}
