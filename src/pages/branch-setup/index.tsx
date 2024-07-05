@@ -5,9 +5,12 @@ import IconPlus from "@/components/icons/IconPlus";
 import Drawer from "@/components/ui/drawer";
 
 import {
+  useBranchList,
+  useMainBranchList,
+} from "@/store/server/branch-setup/query";
+import {
   Box,
   Button,
-  Card,
   Container,
   Skeleton,
   Stack,
@@ -15,27 +18,26 @@ import {
 } from "@mui/material";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import EditMainBranch from "./edit-main-branch";
-import {
-  useBranchList,
-  useMainBranchList,
-} from "@/store/server/branch-setup/query";
+import { getCookie } from "cookies-next";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const index = () => {
+const BranchSetup = () => {
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+
+  const shopId = Number(getCookie("shopId"));
+
+  const { data, isLoading } = useBranchList(shopId);
+
+  const { data: mainBranch, isLoading: load } = useMainBranchList(shopId);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-
-  const { data, isLoading } = useBranchList(278);
-
-  const { data: mainBranch, isLoading: load } = useMainBranchList(278);
 
   return (
     <Container className={inter.className} maxWidth="sm">
@@ -99,4 +101,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default BranchSetup;

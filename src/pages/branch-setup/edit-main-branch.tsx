@@ -17,6 +17,7 @@ import IconSave from "@/components/icons/IconSave";
 import ComboEdit from "@/components/ui/combobox-edit";
 import { useUpdateShop } from "@/store/server/branch-setup/mutation";
 import load from "@/assets/load.gif";
+import { getCookie } from "cookies-next";
 
 // import { useUpdateBranch } from "@/store/server/branch-setup/mutation";
 
@@ -85,6 +86,8 @@ const EditMainBranch = ({
 
   const updateBranch = useUpdateShop();
 
+  const shopId = Number(getCookie("shopId"));
+
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>
       <Stack
@@ -110,7 +113,7 @@ const EditMainBranch = ({
         onSubmit={handleSubmit((value) =>
           updateBranch.mutate(
             {
-              ShopId: 278,
+              ShopId: shopId,
               ShopName: value.shop,
               PhoneNo: value.phone,
               Email: value.email,
