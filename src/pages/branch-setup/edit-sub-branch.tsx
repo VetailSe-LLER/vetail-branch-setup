@@ -106,10 +106,10 @@ const EditSubBranch = ({
   }, [cityDataId]);
 
   useEffect(() => {
-    if (updateBranch.isSuccess) {
+    if (updateBranch?.isSuccess) {
       setSubEdit(true);
     }
-  }, [updateBranch.isSuccess]);
+  }, [updateBranch?.isSuccess]);
 
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>
@@ -134,7 +134,7 @@ const EditSubBranch = ({
         component={"form"}
         marginTop={3}
         onSubmit={handleSubmit((value) =>
-          updateBranch.mutate(
+          updateBranch?.mutate(
             {
               branchId: data.id,
               branchName: value.shop,
@@ -397,9 +397,9 @@ const EditSubBranch = ({
             type="submit"
             variant="contained"
             fullWidth
-            startIcon={updateBranch.isPending ? null : <IconSave />}
+            startIcon={updateBranch?.isPending ? null : <IconSave />}
           >
-            {updateBranch.isPending ? (
+            {updateBranch?.isPending ? (
               <Box component={"img"} src={load.src} width={30} alt="Loading" />
             ) : (
               "သိမ်းဆည်းမည်"

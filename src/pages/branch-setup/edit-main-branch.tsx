@@ -118,7 +118,7 @@ const EditMainBranch = ({
         component={"form"}
         marginTop={3}
         onSubmit={handleSubmit((value) =>
-          updateBranch.mutate(
+          updateBranch?.mutate(
             {
               ShopId: shopId,
               ShopName: value.shop,
@@ -374,9 +374,9 @@ const EditMainBranch = ({
             type="submit"
             variant="contained"
             fullWidth
-            startIcon={updateBranch.isPending ? null : <IconSave />}
+            startIcon={updateBranch?.isPending ? null : <IconSave />}
           >
-            {updateBranch.isPending ? (
+            {updateBranch?.isPending ? (
               <Box component={"img"} src={load.src} width={30} alt="Loading" />
             ) : (
               "သိမ်းဆည်းမည်"

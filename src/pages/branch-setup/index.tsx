@@ -61,7 +61,7 @@ const BranchSetup = () => {
   }, [bol, setBol]);
 
   useEffect(() => {
-    if (updateBranch.isSuccess) {
+    if (updateBranch?.isSuccess) {
       setUp(true);
       const timer = setTimeout(() => {
         setUp(false);
@@ -69,7 +69,7 @@ const BranchSetup = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [updateBranch.isSuccess]);
+  }, [updateBranch?.isSuccess]);
 
   return (
     <Container className={inter.className} maxWidth="sm">

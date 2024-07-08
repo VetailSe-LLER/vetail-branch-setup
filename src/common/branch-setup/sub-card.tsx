@@ -28,7 +28,7 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
   };
 
   useEffect(() => {
-    if (updateBranch.isSuccess) {
+    if (updateBranch?.isSuccess) {
       setBol(true);
       const timer = setTimeout(() => {
         setBol(false);
@@ -36,7 +36,7 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
 
       return () => clearTimeout(timer);
     }
-  }, [updateBranch.isSuccess]);
+  }, [updateBranch?.isSuccess]);
 
   return (
     <Box
