@@ -1,14 +1,15 @@
+import { useDeleteBranch } from "@/store/server/branch-setup/mutation";
 import { Box, Button, Modal } from "@mui/material";
 import React, { useState } from "react";
 
 const ConfirmModal = ({
   open,
   setOpen,
-  onClick,
+  id,
 }: {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  onClick: any;
+  id: number;
 }) => {
   const style = {
     position: "absolute" as "absolute",
@@ -23,6 +24,8 @@ const ConfirmModal = ({
     boxShadow: 24,
     p: 4,
   };
+
+  const deleteBranch = useDeleteBranch();
 
   return (
     <Box component={"div"} mx={10}>
@@ -45,7 +48,12 @@ const ConfirmModal = ({
             >
               Cancel
             </Button>
-            <Button onClick={onClick} variant="contained" color="error">
+            <Button
+              onClick={() => deleteBranch.mutate(id)}
+              disabled={deleteBranch.isPending}
+              variant="contained"
+              color="error"
+            >
               Delete
             </Button>
           </Box>

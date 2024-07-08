@@ -18,6 +18,7 @@ import load from "@/assets/load.gif";
 import { getCookie } from "cookies-next";
 import { township, useCity } from "@/store/server/city-township/query";
 import IconMapPin from "@/components/icons/IconMapPin";
+import { UseMutationResult } from "@tanstack/react-query";
 
 // import { useUpdateBranch } from "@/store/server/branch-setup/mutation";
 
@@ -47,9 +48,11 @@ const YupSchema = yup.object({
 const EditMainBranch = ({
   setOpen,
   data,
+  updateBranch,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   data: any;
+  updateBranch: UseMutationResult<any, Error, any, unknown>;
 }) => {
   const {
     control,
@@ -89,8 +92,6 @@ const EditMainBranch = ({
       townData();
     }
   }, [cityDataId]);
-
-  const updateBranch = useUpdateShop();
 
   const shopId = Number(getCookie("shopId"));
 

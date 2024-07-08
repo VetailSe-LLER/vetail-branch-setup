@@ -55,10 +55,7 @@ export const useUpdateSubBranch = () => {
 // sub branch delete
 
 const deleteBranch = async (id: number) => {
-  const { data } = await axios.delete(`auth/DeleteBranch`, {
-    params: {
-      BranchId: id,
-    },
+  const { data } = await axios.delete(`auth/DeleteBranch?BranchId=${id}`, {
     headers: authJsonHeader(),
   });
 

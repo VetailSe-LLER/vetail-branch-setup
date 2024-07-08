@@ -3,21 +3,40 @@ import IconFlag from "@/components/icons/IconFlag";
 import IconMenu from "@/components/icons/IconMenu";
 import IconMinus from "@/components/icons/IconMinus";
 import ConfirmModal from "@/components/ui/confirm-modal";
+import CustomAlert from "@/components/ui/custom-alert";
 import Drawer from "@/components/ui/drawer";
 import EditSubBranch from "@/pages/branch-setup/edit-sub-branch";
-import { useDeleteBranch } from "@/store/server/branch-setup/mutation";
+import {
+  useDeleteBranch,
+  useUpdateSubBranch,
+} from "@/store/server/branch-setup/mutation";
 import { Box, Container, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
-  const deleteBranch = useDeleteBranch();
+  // const deleteBranch = useDeleteBranch();
   const [open, setOpen] = useState(false);
 
   const [edit, setEdit] = useState(false);
 
+  const [bal, setBol] = useState(false);
+
+  const updateBranch = useUpdateSubBranch();
+
   const toggleDrawer = (newOpen: boolean) => () => {
     setEdit(newOpen);
   };
+
+  useEffect(() => {
+    if (updateBranch.isSuccess) {
+      setBol(true);
+      const timer = setTimeout(() => {
+        setBol(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [updateBranch.isSuccess]);
 
   return (
     <Box
@@ -26,6 +45,8 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
         borderBottom: "2px solid #EEEEEE",
       }}
     >
+      {bal && <CustomAlert />}
+
       <Stack pt={2} direction={"row"} justifyContent={"space-between"}>
         <Box display={"flex"} alignItems={"center"} gap={1} component={"div"}>
           <IconMenu />
@@ -57,27 +78,31 @@ const SubCard = ({ branch }: { branch: SelectedBranchList }) => {
         <Box fontSize={"15px"} pt={"8px"} component={"li"}>
           {branch.address}
         </Box>
-        <Box
-          component={"div"}
-          display={"flex"}
-          alignItems={"center"}
-          gap={1}
-          mt={"5px"}
-        >
-          <IconFlag />
-          <Box fontSize={"15px"} component={"p"} my={0}>
-            {branch.landMark || "-"}
+        {branch.landMark && (
+          <Box
+            component={"div"}
+            display={"flex"}
+            alignItems={"center"}
+            gap={1}
+            mt={"5px"}
+          >
+            <IconFlag />
+            <Box fontSize={"15px"} component={"p"} my={0}>
+              {branch.landMark || "-"}
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
-      <ConfirmModal
-        open={open}
-        setOpen={setOpen}
-        onClick={() => deleteBranch.mutate(branch.id)}
-      />
+      <ConfirmModal open={open} setOpen={setOpen} id={branch.id} />
 
       <Drawer open={edit} toggleDrawer={toggleDrawer}>
-        {branch && <EditSubBranch data={branch} setOpen={setEdit} />}
+        {branch && (
+          <EditSubBranch
+            updateBranch={updateBranch}
+            data={branch}
+            setOpen={setEdit}
+          />
+        )}
       </Drawer>
     </Box>
   );

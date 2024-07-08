@@ -17,6 +17,8 @@ import Email from "@/assets/email.png";
 import load from "@/assets/load.gif";
 import { township, useCity } from "@/store/server/city-township/query";
 import IconMapPin from "@/components/icons/IconMapPin";
+import useAlertStore from "@/store/client/useStore";
+import { UseMutationResult } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
 
 export interface EditMainBranchProp {
@@ -43,8 +45,10 @@ const YupSchema = yup.object({
 const EditSubBranch = ({
   setOpen,
   data,
+  updateBranch,
 }: {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  updateBranch: UseMutationResult<any, Error, any, unknown>;
   data: any;
 }) => {
   const {
@@ -82,10 +86,9 @@ const EditSubBranch = ({
 
   const [cityId, setCityId] = useState<any>({ label: "", value: data?.cityId });
   const [townShipData, setTown] = useState<any[]>([]);
+  const setSubEdit = useAlertStore((state: any) => state.setSubEdit);
 
   const { data: citydata, isLoading } = useCity();
-
-  console.log("");
 
   const cityDataId =
     cityId &&
@@ -102,7 +105,11 @@ const EditSubBranch = ({
     }
   }, [cityDataId]);
 
-  const updateBranch = useUpdateSubBranch();
+  useEffect(() => {
+    if (updateBranch.isSuccess) {
+      setSubEdit(true);
+    }
+  }, [updateBranch.isSuccess]);
 
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>
