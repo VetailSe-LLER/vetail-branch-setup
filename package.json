@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next dev",
+    "build": "cross-env NEXT_PRIVATE_LOCAL_WEBPACK=true next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -12,17 +12,22 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.6.0",
+    "@module-federation/nextjs-mf": "^8.3.26",
     "@mui/lab": "5.0.0-alpha.170",
     "@mui/material": "^5.15.21",
     "@tanstack/react-query": "^5.49.2",
     "@tanstack/react-query-devtools": "^5.49.2",
     "axios": "^1.7.2",
+    "cookies-next": "^4.2.1",
+    "cross-env": "^7.0.3",
+    "feather-route-matcher": "^4.0.0",
     "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",
     "yup": "^1.4.0",
-    "zustand": "^4.5.4"
+    "zustand": "^4.5.4",
+    "webpack": "^5.92.1"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.50.0",

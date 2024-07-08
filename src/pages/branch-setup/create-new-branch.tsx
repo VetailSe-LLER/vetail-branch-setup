@@ -1,37 +1,24 @@
 import IconEmail from "@/components/icons/IconEmail";
+import IconError from "@/components/icons/IconError";
 import IconLeftArrow from "@/components/icons/IconLeftArrow";
 import IconMapPin from "@/components/icons/IconMapPin";
 import IconPhone from "@/components/icons/IconPhone";
 import IconSave from "@/components/icons/IconSave";
 import IconShop from "@/components/icons/IconShop";
-import CustomTextFiled from "@/components/ui/custom-text-field";
-import {
-  Box,
-  Button,
-  Container,
-  FormLabel,
-  IconButton,
-  Input,
-  InputAdornment,
-  OutlinedInput,
-  Stack,
-  TextField,
-} from "@mui/material";
-import { Inter } from "next/font/google";
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import IconError from "@/components/icons/IconError";
 import Combobox from "@/components/ui/combobox";
-import Link from "next/link";
-import { useCreateBranch } from "@/store/server/branch-setup/mutation";
-import AlertBox from "@/components/ui/alert-box";
-import IconCheck from "@/components/icons/IconCheck";
-import IconMinus from "@/components/icons/IconMinus";
+import CustomTextFiled from "@/components/ui/custom-text-field";
 import Loading from "@/components/ui/Loading";
 import SuccessBox from "@/components/ui/success-box";
+import { useCreateBranch } from "@/store/server/branch-setup/mutation";
 import { township, useCity } from "@/store/server/city-township/query";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Box, Button, Container, Stack } from "@mui/material";
+import { getCookie } from "cookies-next";
+import { Inter } from "next/font/google";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import * as yup from "yup";
 import useAlertStore from "@/store/client/useStore";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -86,6 +73,8 @@ const CreateNewBranch = () => {
 
   const { data: citydata, isLoading } = useCity();
 
+  const shopId = Number(getCookie("shopId"));
+
   const cityDataId =
     cityId && citydata?.filter((city: any) => city.name === cityId)?.[0]?.id;
 
@@ -134,7 +123,7 @@ const CreateNewBranch = () => {
         marginTop={3}
         onSubmit={handleSubmit((value) =>
           createBranch.mutate({
-            shopId: 278,
+            shopId,
             branchName: value.shop,
             phoneNo: value.phone,
             email: value.email ? value.email : "",

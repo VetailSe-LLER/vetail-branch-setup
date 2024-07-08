@@ -5,9 +5,12 @@ import IconPlus from "@/components/icons/IconPlus";
 import Drawer from "@/components/ui/drawer";
 
 import {
+  useBranchList,
+  useMainBranchList,
+} from "@/store/server/branch-setup/query";
+import {
   Box,
   Button,
-  Card,
   Container,
   Skeleton,
   Stack,
@@ -15,27 +18,28 @@ import {
 } from "@mui/material";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import EditMainBranch from "./edit-main-branch";
-import {
-  useBranchList,
-  useMainBranchList,
-} from "@/store/server/branch-setup/query";
+import { getCookie } from "cookies-next";
 import useAlertStore from "@/store/client/useStore";
 import SuccessBox from "@/components/ui/success-box";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const index = () => {
+const BranchSetup = () => {
   const theme = useTheme();
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+
+  const shopId = Number(getCookie("shopId"));
+
+  const { data, isLoading } = useBranchList(shopId);
+
+  const { data: mainBranch, isLoading: load } = useMainBranchList(shopId);
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
   };
-
-  const { data, isLoading } = useBranchList(278);
 
   const bol = useAlertStore((state: any) => state.bol);
   const setBol = useAlertStore((state: any) => state.setBol);
@@ -49,8 +53,6 @@ const index = () => {
       return () => clearTimeout(timer);
     }
   }, [bol, setBol]);
-
-  const { data: mainBranch, isLoading: load } = useMainBranchList(278);
 
   return (
     <Container className={inter.className} maxWidth="sm">
@@ -89,8 +91,8 @@ const index = () => {
       {/* SubCard */}
       {data && !isLoading ? (
         <>
-          {data?.branchInfo.map((branch) => (
-            <SubCard branch={branch} />
+          {data?.branchInfo.map((branch, index) => (
+            <SubCard branch={branch} key={index} />
           ))}
         </>
       ) : (
@@ -115,4 +117,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default BranchSetup;

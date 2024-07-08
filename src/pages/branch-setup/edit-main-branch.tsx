@@ -15,6 +15,7 @@ import IconSave from "@/components/icons/IconSave";
 import ComboEdit from "@/components/ui/combobox-edit";
 import { useUpdateShop } from "@/store/server/branch-setup/mutation";
 import load from "@/assets/load.gif";
+import { getCookie } from "cookies-next";
 import { township, useCity } from "@/store/server/city-township/query";
 import IconMapPin from "@/components/icons/IconMapPin";
 
@@ -59,13 +60,13 @@ const EditMainBranch = ({
   } = useForm<EditMainBranchProp>({
     resolver: yupResolver(YupSchema),
     defaultValues: {
-      shop: data.shopName,
-      phone: data.phoneNo,
-      email: data.email,
-      map: data.cityId, // assuming cityId is the correct value
-      address: data.shopAddress,
-      township: data.townShipId, // assuming townShipId is the correct value
-      nearest: data.landMark || "",
+      shop: data?.shopName,
+      phone: data?.phoneNo,
+      email: data?.email,
+      map: data?.cityId, // assuming cityId is the correct value
+      address: data?.shopAddress,
+      township: data?.townShipId, // assuming townShipId is the correct value
+      nearest: data?.landMark || "",
     },
   });
 
@@ -90,6 +91,8 @@ const EditMainBranch = ({
   }, [cityDataId]);
 
   const updateBranch = useUpdateShop();
+
+  const shopId = Number(getCookie("shopId"));
 
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>
@@ -116,7 +119,7 @@ const EditMainBranch = ({
         onSubmit={handleSubmit((value) =>
           updateBranch.mutate(
             {
-              ShopId: 278,
+              ShopId: shopId,
               ShopName: value.shop,
               PhoneNo: value.phone,
               Email: value.email,
