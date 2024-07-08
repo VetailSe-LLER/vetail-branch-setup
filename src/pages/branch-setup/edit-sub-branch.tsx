@@ -34,7 +34,10 @@ export interface EditMainBranchProp {
 // yup schema
 const YupSchema = yup.object({
   shop: yup.string().required("ဆိုင်ခွဲအမည်ထည့်ရန် လိုအပ်ပါသည်"),
-  phone: yup.string().required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်"),
+  phone: yup
+    .string()
+    .required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်")
+    .matches(/^(?:\d{9}|\d{11})$/, "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်"),
   email: yup.string().email(),
   map: yup.string().required("မြို့‌ရွေးချယ်ရန် လိုအပ်ပါသည်"),
   township: yup.string().required("မြို့‌‌‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
