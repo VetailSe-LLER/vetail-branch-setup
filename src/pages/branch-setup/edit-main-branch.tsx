@@ -70,7 +70,7 @@ const EditMainBranch = ({
     },
   });
 
-  const [cityId, setCityId] = useState<any>({ label: "", value: data.cityId });
+  const [cityId, setCityId] = useState<any>({ label: "", value: data?.cityId });
   const [townShipData, setTown] = useState<any[]>([]);
 
   const { data: citydata, isLoading } = useCity();

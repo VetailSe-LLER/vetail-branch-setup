@@ -8,7 +8,7 @@ interface ComboboxProp {
   labelInput: string;
   icon: ReactNode;
   option: any[];
-  setValue?: React.Dispatch<React.SetStateAction<string>>;
+  setValue?: React.Dispatch<React.SetStateAction<any>>;
 }
 
 const ComboEdit = ({
@@ -37,7 +37,7 @@ const ComboEdit = ({
       onChange={(event, newValue) => {
         field.onChange(newValue ? newValue.value : "");
         if (newValue) {
-          setValue && setValue(newValue as string);
+          setValue && setValue(newValue);
         }
       }} // Handle change correctly
       sx={{
