@@ -85,6 +85,8 @@ const EditSubBranch = ({
 
   const { data: citydata, isLoading } = useCity();
 
+  console.log("");
+
   const cityDataId =
     cityId &&
     citydata?.filter((city: any) => city.id === cityId.value)?.[0]?.id;
