@@ -4,11 +4,9 @@ import IconShop from "@/components/icons/IconShop";
 import IconError from "@/components/icons/IconError";
 import CustomTextFiled from "@/components/ui/custom-text-field";
 import { useMainBranchList } from "@/store/server/branch-setup/query";
-import { citydata } from "@/assets/citydata";
-import { townShipData } from "@/assets/townShipData";
 import { Box, Button, Container, Stack } from "@mui/material";
 import { Inter } from "next/font/google";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -17,6 +15,8 @@ import ComboEdit from "@/components/ui/combobox-edit";
 import { useUpdateSubBranch } from "@/store/server/branch-setup/mutation";
 import Email from "@/assets/email.png";
 import load from "@/assets/load.gif";
+import { township, useCity } from "@/store/server/city-township/query";
+import IconMapPin from "@/components/icons/IconMapPin";
 const inter = Inter({ subsets: ["latin"] });
 
 export interface EditMainBranchProp {
@@ -79,6 +79,26 @@ const EditSubBranch = ({
       });
     }
   }, [data, reset]);
+
+  const [cityId, setCityId] = useState<any>({ label: "", value: data.cityId });
+  const [townShipData, setTown] = useState<any[]>([]);
+
+  const { data: citydata, isLoading } = useCity();
+
+  const cityDataId =
+    cityId &&
+    citydata?.filter((city: any) => city.id === cityId.value)?.[0]?.id;
+
+  useEffect(() => {
+    if (cityDataId) {
+      const townData = async () => {
+        const data = await township(cityDataId);
+        setTown(data);
+        return data;
+      };
+      townData();
+    }
+  }, [cityDataId]);
 
   const updateBranch = useUpdateSubBranch();
 
@@ -238,35 +258,37 @@ const EditSubBranch = ({
           <Controller
             control={control}
             name="map"
-            render={({ field }) => (
-              <>
-                <ComboEdit
-                  icon={<IconShop />}
-                  labelInput="*မြို့‌ရွေးချယ်ပါ"
-                  error={!!errors.map}
-                  field={field}
-                  option={citydata.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                  }))}
-                />
-                {errors.map && (
-                  <Box
-                    fontSize={12}
-                    display={"flex"}
-                    width={"100%"}
-                    color={"red"}
-                    component={"div"}
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    gap={1}
-                    mt={1}
-                  >
-                    <IconError /> {errors.map.message}
-                  </Box>
-                )}
-              </>
-            )}
+            render={({ field }) => {
+              return (
+                <>
+                  <ComboEdit
+                    setValue={setCityId}
+                    option={citydata?.map((city: any) => {
+                      return { label: city.name, value: city.id };
+                    })}
+                    icon={<IconMapPin />}
+                    labelInput="*မြို့ရွေးချယ်ပါ"
+                    error={!!errors.map}
+                    field={field}
+                  />
+                  {errors.map && (
+                    <Box
+                      fontSize={12}
+                      display={"flex"}
+                      width={"100%"}
+                      color={"red"}
+                      component={"div"}
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      gap={1}
+                      mt={1}
+                    >
+                      <IconError /> {errors.map.message}
+                    </Box>
+                  )}
+                </>
+              );
+            }}
           />
         </Box>
         <Box component={"div"}>
@@ -277,7 +299,7 @@ const EditSubBranch = ({
               <>
                 <ComboEdit
                   icon={<IconShop />}
-                  labelInput="*မြို့နယ်‌ရွေးချယ်ပါ"
+                  labelInput="မြို့နယ်"
                   error={!!errors.township}
                   field={field}
                   option={townShipData.map((item) => ({

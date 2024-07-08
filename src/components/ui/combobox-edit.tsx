@@ -8,6 +8,7 @@ interface ComboboxProp {
   labelInput: string;
   icon: ReactNode;
   option: any[];
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const ComboEdit = ({
@@ -16,6 +17,7 @@ const ComboEdit = ({
   labelInput,
   icon,
   option,
+  setValue,
 }: ComboboxProp) => {
   const [labelShrink, setLabelShrink] = useState(false);
 
@@ -31,10 +33,13 @@ const ComboEdit = ({
       options={option}
       // isOptionEqualToValue={(option, value) => option.id === Number(value)}
       getOptionLabel={(option) => option.label}
-      value={option.find((opt) => opt.value === field.value) || null} // Ensure the value is set correctly
-      onChange={(event, newValue) =>
-        field.onChange(newValue ? newValue.value : "")
-      } // Handle change correctly
+      value={option?.find((opt) => opt.value === field.value) || null} // Ensure the value is set correctly
+      onChange={(event, newValue) => {
+        field.onChange(newValue ? newValue.value : "");
+        if (newValue) {
+          setValue && setValue(newValue as string);
+        }
+      }} // Handle change correctly
       sx={{
         "& fieldset": {
           borderRadius: "10px",

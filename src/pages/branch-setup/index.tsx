@@ -21,6 +21,8 @@ import {
   useBranchList,
   useMainBranchList,
 } from "@/store/server/branch-setup/query";
+import useAlertStore from "@/store/client/useStore";
+import SuccessBox from "@/components/ui/success-box";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,10 +37,24 @@ const index = () => {
 
   const { data, isLoading } = useBranchList(278);
 
+  const bol = useAlertStore((state: any) => state.bol);
+  const setBol = useAlertStore((state: any) => state.setBol);
+
+  React.useEffect(() => {
+    if (bol) {
+      const timer = setTimeout(() => {
+        setBol(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [bol, setBol]);
+
   const { data: mainBranch, isLoading: load } = useMainBranchList(278);
 
   return (
     <Container className={inter.className} maxWidth="sm">
+      {bol && <SuccessBox />}
       <Stack direction={"row"} display={"flex"} gap={1} alignItems={"center"}>
         <IconLeftArrow />
         <Box component={"p"}>Branch Setup</Box>

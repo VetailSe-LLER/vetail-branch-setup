@@ -32,6 +32,7 @@ import IconMinus from "@/components/icons/IconMinus";
 import Loading from "@/components/ui/Loading";
 import SuccessBox from "@/components/ui/success-box";
 import { township, useCity } from "@/store/server/city-township/query";
+import useAlertStore from "@/store/client/useStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,9 +77,10 @@ const CreateNewBranch = () => {
     },
   });
 
-  const [open, setOpen] = useState(false);
   const [cityId, setCityId] = useState<string>("");
   const [townShipData, setTown] = useState<any[]>([]);
+
+  const setBol = useAlertStore((state: any) => state.setBol);
 
   const createBranch = useCreateBranch();
 
@@ -100,7 +102,7 @@ const CreateNewBranch = () => {
 
   useEffect(() => {
     if (createBranch.isSuccess) {
-      setOpen(true);
+      setBol(true);
     }
   }, [createBranch.isSuccess]);
 
@@ -108,9 +110,7 @@ const CreateNewBranch = () => {
     return <Loading open={true} />;
   }
 
-  if (open) {
-    return <SuccessBox />;
-  }
+  const state = getValues("map");
 
   return (
     <Container
@@ -166,17 +166,10 @@ const CreateNewBranch = () => {
                     resetField={resetField}
                   />
                   <Box
-                    sx={{ fontSize: 12 }}
                     display={"flex"}
                     alignItems={"center"}
-                    justifyContent={"end"}
-                    pl={2}
-                    mt={1}
-                    component={"div"}
+                    justifyContent={"space-between"}
                   >
-                    {field.value.length}/50
-                  </Box>
-                  {errors.shop && (
                     <Box
                       fontSize={12}
                       display={"flex"}
@@ -188,9 +181,25 @@ const CreateNewBranch = () => {
                       gap={1}
                       mt={1}
                     >
-                      <IconError /> {errors.shop.message}
+                      {errors.shop && (
+                        <>
+                          <IconError /> {errors.shop.message}
+                        </>
+                      )}
                     </Box>
-                  )}
+
+                    <Box
+                      sx={{ fontSize: 12 }}
+                      display={"flex"}
+                      alignItems={"center"}
+                      justifyContent={"end"}
+                      pl={2}
+                      mt={1}
+                      component={"div"}
+                    >
+                      {field.value.length}/50
+                    </Box>
+                  </Box>
                 </>
               );
             }}
@@ -309,42 +318,44 @@ const CreateNewBranch = () => {
             }}
           />
         </Box>
-        <Box component={"div"}>
-          <Controller
-            control={control}
-            name="township"
-            render={({ field }) => {
-              return (
-                <>
-                  <Combobox
-                    option={townShipData.map((town) => {
-                      return { label: town.name, value: town.id };
-                    })}
-                    icon={<IconMapPin />}
-                    labelInput="*မြို့နယ်ရွေးချယ်ပါ"
-                    error={!!errors.township}
-                    field={field}
-                  />
-                  {errors.township && (
-                    <Box
-                      fontSize={12}
-                      display={"flex"}
-                      width={"100%"}
-                      color={"red"}
-                      component={"div"}
-                      justifyContent={"start"}
-                      alignItems={"center"}
-                      gap={1}
-                      mt={1}
-                    >
-                      <IconError /> {errors.township.message}
-                    </Box>
-                  )}
-                </>
-              );
-            }}
-          />
-        </Box>
+        {state && (
+          <Box component={"div"}>
+            <Controller
+              control={control}
+              name="township"
+              render={({ field }) => {
+                return (
+                  <>
+                    <Combobox
+                      option={townShipData.map((town) => {
+                        return { label: town.name, value: town.id };
+                      })}
+                      icon={<IconMapPin />}
+                      labelInput="*မြို့နယ်ရွေးချယ်ပါ"
+                      error={!!errors.township}
+                      field={field}
+                    />
+                    {errors.township && (
+                      <Box
+                        fontSize={12}
+                        display={"flex"}
+                        width={"100%"}
+                        color={"red"}
+                        component={"div"}
+                        justifyContent={"start"}
+                        alignItems={"center"}
+                        gap={1}
+                        mt={1}
+                      >
+                        <IconError /> {errors.township.message}
+                      </Box>
+                    )}
+                  </>
+                );
+              }}
+            />
+          </Box>
+        )}
         <Box component={"div"}>
           <Controller
             control={control}
