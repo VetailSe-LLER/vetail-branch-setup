@@ -40,7 +40,9 @@ const YupSchema = yup.object({
   phone: yup
     .string()
     .required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်")
-    .matches(/^(?:\d{9}|\d{11})$/, "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်"),
+    .matches(/^(?:\d{9}|\d{11})$/, {
+      message: "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်",
+    }),
   email: yup.string().email(),
   map: yup.string().required("မြို့‌ရွေးချယ်ရန် လိုအပ်ပါသည်"),
   township: yup.string().required("မြို့‌‌‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
@@ -128,7 +130,7 @@ const EditMainBranch = ({
               PhoneNo: value.phone,
               Email: value.email,
               CityId: Number(value.map),
-              TownshipId: Number(value.township),
+              TownshipId: Number(value.township) || 0,
               Address: value.address,
               LandMark: value.nearest,
             },
@@ -280,41 +282,43 @@ const EditMainBranch = ({
             }}
           />
         </Box>
-        <Box component={"div"}>
-          <Controller
-            control={control}
-            name="township"
-            render={({ field }) => (
-              <>
-                <ComboEdit
-                  icon={<IconShop />}
-                  labelInput="မြို့နယ်"
-                  error={!!errors.township}
-                  field={field}
-                  option={townShipData.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                  }))}
-                />
-                {errors.township && (
-                  <Box
-                    fontSize={12}
-                    display={"flex"}
-                    width={"100%"}
-                    color={"red"}
-                    component={"div"}
-                    justifyContent={"start"}
-                    alignItems={"center"}
-                    gap={1}
-                    mt={1}
-                  >
-                    <IconError /> {errors.township.message}
-                  </Box>
-                )}
-              </>
-            )}
-          />
-        </Box>
+        {data.townShipId && townShipData.length !== 0 && (
+          <Box component={"div"}>
+            <Controller
+              control={control}
+              name="township"
+              render={({ field }) => (
+                <>
+                  <ComboEdit
+                    icon={<IconShop />}
+                    labelInput="မြို့နယ်"
+                    error={!!errors.township}
+                    field={field}
+                    option={townShipData.map((item) => ({
+                      label: item.name,
+                      value: item.id,
+                    }))}
+                  />
+                  {errors.township && (
+                    <Box
+                      fontSize={12}
+                      display={"flex"}
+                      width={"100%"}
+                      color={"red"}
+                      component={"div"}
+                      justifyContent={"start"}
+                      alignItems={"center"}
+                      gap={1}
+                      mt={1}
+                    >
+                      <IconError /> {errors.township.message}
+                    </Box>
+                  )}
+                </>
+              )}
+            />
+          </Box>
+        )}
         <Box component={"div"}>
           <Controller
             control={control}

@@ -39,7 +39,9 @@ const YupSchema = yup.object({
   phone: yup
     .string()
     .required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်")
-    .matches(/^(?:\d{9}|\d{11})$/, "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်"),
+    .matches(/^(?:\d{9}|\d{11})$/, {
+      message: "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်",
+    }),
   email: yup.string().email(),
   map: yup.string().required("မြို့‌ရွေးချယ်ရန် လိုအပ်ပါသည်"),
   township: yup.string().required("မြို့‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
@@ -310,7 +312,7 @@ const CreateNewBranch = () => {
             }}
           />
         </Box>
-        {state && (
+        {state && townShipData.length !== 0 && (
           <Box component={"div"}>
             <Controller
               control={control}

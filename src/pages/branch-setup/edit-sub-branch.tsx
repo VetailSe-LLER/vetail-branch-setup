@@ -37,7 +37,9 @@ const YupSchema = yup.object({
   phone: yup
     .string()
     .required("ဖုန်းနံပါတ်ထည့်ရန် လိုအပ်ပါသည်")
-    .matches(/^(?:\d{9}|\d{11})$/, "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည်"),
+    .matches(/^(?:\d{9}|\d{11})$/, {
+      message: "ဖုန်းနံပါတ်သည် 9 သို့မဟုတ် 11 လုံးရှိရမည",
+    }),
   email: yup.string().email(),
   map: yup.string().required("မြို့‌ရွေးချယ်ရန် လိုအပ်ပါသည်"),
   township: yup.string().required("မြို့‌‌‌နယ်ရွေးချယ်ရန် လိုအပ်ပါသည်"),
@@ -81,7 +83,7 @@ const EditSubBranch = ({
         email: data?.email || "",
         map: data?.cityId, // assuming cityId is the correct value
         address: data?.address,
-        township: data?.townshipId, // assuming townShipId is the correct value
+        township: data?.townshipId || 0, // assuming townShipId is the correct value
         nearest: data?.landMark || "",
       });
     }
