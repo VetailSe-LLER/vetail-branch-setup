@@ -282,7 +282,7 @@ const EditMainBranch = ({
             }}
           />
         </Box>
-        {data.townShipId && townShipData.length !== 0 && (
+        {data?.townShipId && townShipData.length !== 0 && (
           <Box component={"div"}>
             <Controller
               control={control}
