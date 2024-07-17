@@ -47,8 +47,10 @@ const BranchSetup = () => {
 
   const updateBranch = useUpdateShop();
 
-  const bol = useAlertStore((state: any) => state.bol);
-  const setBol = useAlertStore((state: any) => state.setBol);
+  const [bol, setBol] = useState(false);
+
+  // const bol = useAlertStore((state: any) => state.bol);
+  // const setBol = useAlertStore((state: any) => state.setBol);
 
   React.useEffect(() => {
     if (bol) {
@@ -96,9 +98,10 @@ const BranchSetup = () => {
               borderRadius: "30px",
               paddingBlock: 1.4,
               marginTop: 2,
+              bgcolor: "#2E6EFF",
             }}
             startIcon={<IconPlus />}
-            color={"primary"}
+            // color={"#2E6EFF"}
             variant="contained"
           >
             ဆိုင်ခွဲအသစ်ထည့်မည်

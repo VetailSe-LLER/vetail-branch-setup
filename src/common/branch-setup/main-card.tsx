@@ -65,7 +65,7 @@ const MainCard = ({
           <IconPhone />
         </Box>
         <Box
-          sx={{ color: theme.palette.textColor.main, textAlign: "start" }}
+          sx={{ color: "#1E1E1ECC", textAlign: "start" }}
           my={0}
           fontSize={14}
           component={"p"}
@@ -83,12 +83,7 @@ const MainCard = ({
         <Box component={"div"} width={30}>
           <IconMapPin />
         </Box>
-        <Box
-          sx={{ color: theme.palette.textColor.main }}
-          my={0}
-          fontSize={14}
-          component={"p"}
-        >
+        <Box sx={{ color: "#1E1E1ECC" }} my={0} fontSize={14} component={"p"}>
           {data?.shopAddress}
         </Box>
       </Stack>

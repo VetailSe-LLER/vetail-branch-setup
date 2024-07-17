@@ -91,7 +91,7 @@ const EditSubBranch = ({
 
   const [cityId, setCityId] = useState<any>({ label: "", value: data?.cityId });
   const [townShipData, setTown] = useState<any[]>([]);
-  const setSubEdit = useAlertStore((state: any) => state.setSubEdit);
+  // const setSubEdit = useAlertStore((state: any) => state.setSubEdit);
 
   const { data: citydata, isLoading } = useCity();
 
@@ -110,11 +110,11 @@ const EditSubBranch = ({
     }
   }, [cityDataId]);
 
-  useEffect(() => {
-    if (updateBranch?.isSuccess) {
-      setSubEdit(true);
-    }
-  }, [updateBranch?.isSuccess]);
+  // useEffect(() => {
+  //   if (updateBranch?.isSuccess) {
+  //     // setSubEdit(true);
+  //   }
+  // }, [updateBranch?.isSuccess]);
 
   return (
     <Container sx={{ position: "relative" }} className={`${inter.className}`}>

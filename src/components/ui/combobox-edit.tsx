@@ -89,7 +89,7 @@ const ComboEdit = ({
             },
             "& .Mui-focused": {
               "& .MuiInputAdornment-root svg": {
-                color: error ? "current" : "primary.main",
+                color: error ? "current" : "#2E6EFF",
               },
             },
           }}
