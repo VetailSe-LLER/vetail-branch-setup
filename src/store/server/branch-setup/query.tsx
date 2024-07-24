@@ -12,7 +12,7 @@ const mainBranchList = async (id: number) => {
 
 export const useMainBranchList = (id: number) => {
   return useQuery({
-    queryKey: ["main-branch-list"],
+    queryKey: ["main-branch-list", id],
     queryFn: () => mainBranchList(id),
   });
 };
@@ -29,7 +29,7 @@ const branchList = async (
 
 export const useBranchList = (id: number) => {
   return useQuery({
-    queryKey: ["branch-list"],
+    queryKey: ["branch-list", id],
     queryFn: () => branchList(id),
   });
 };

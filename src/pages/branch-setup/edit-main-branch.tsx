@@ -83,6 +83,20 @@ const EditMainBranch = ({
 
   const { data: citydata, isLoading } = useCity();
 
+  useEffect(() => {
+    if (data) {
+      reset({
+        shop: data?.shopName,
+        phone: data?.phoneNo,
+        email: data?.email,
+        map: data?.cityId, // assuming cityId is the correct value
+        address: data?.shopAddress,
+        township: data?.townShipId, // assuming townShipId is the correct value
+        nearest: data?.landMark || "",
+      });
+    }
+  }, [data, reset]);
+
   const cityDataId =
     cityId &&
     citydata?.filter((city: any) => city.id === cityId.value)?.[0]?.id;
