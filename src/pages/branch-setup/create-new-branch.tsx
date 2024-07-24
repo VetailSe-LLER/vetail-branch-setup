@@ -8,7 +8,6 @@ import IconShop from "@/components/icons/IconShop";
 import Combobox from "@/components/ui/combobox";
 import CustomTextFiled from "@/components/ui/custom-text-field";
 import Loading from "@/components/ui/Loading";
-import SuccessBox from "@/components/ui/success-box";
 import { useCreateBranch } from "@/store/server/branch-setup/mutation";
 import { township, useCity } from "@/store/server/city-township/query";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,7 +18,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
-import useAlertStore from "@/store/client/useStore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -72,7 +70,7 @@ const CreateNewBranch = () => {
   const [cityId, setCityId] = useState<string>("");
   const [townShipData, setTown] = useState<any[]>([]);
 
-  const setBol = useAlertStore((state: any) => state.setBol);
+  // const setBol = useAlertStore((state: any) => state.setBol);
 
   const createBranch = useCreateBranch();
 
@@ -94,11 +92,11 @@ const CreateNewBranch = () => {
     }
   }, [cityDataId]);
 
-  useEffect(() => {
-    if (createBranch.isSuccess) {
-      setBol(true);
-    }
-  }, [createBranch.isSuccess]);
+  // useEffect(() => {
+  //   if (createBranch.isSuccess) {
+  //     // setBol(true);
+  //   }
+  // }, [createBranch.isSuccess]);
 
   if (createBranch.isPending) {
     return <Loading open={true} />;

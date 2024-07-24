@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .css-1cy3je6-MuiInputBase-root-MuiOutlinedInput-root {
   border-radius: 12px;
 }

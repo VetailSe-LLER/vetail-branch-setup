@@ -4,6 +4,9 @@ import IconLeftArrow from "@/components/icons/IconLeftArrow";
 import IconPlus from "@/components/icons/IconPlus";
 import Drawer from "@/components/ui/drawer";
 
+import CustomAlert from "@/components/ui/custom-alert";
+import SuccessBox from "@/components/ui/success-box";
+import { useUpdateShop } from "@/store/server/branch-setup/mutation";
 import {
   useBranchList,
   useMainBranchList,
@@ -16,15 +19,11 @@ import {
   Stack,
   useTheme,
 } from "@mui/material";
+import { getCookie } from "cookies-next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import EditMainBranch from "./edit-main-branch";
-import { getCookie } from "cookies-next";
-import useAlertStore from "@/store/client/useStore";
-import SuccessBox from "@/components/ui/success-box";
-import CustomAlert from "@/components/ui/custom-alert";
-import { useUpdateShop } from "@/store/server/branch-setup/mutation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -77,16 +76,16 @@ const BranchSetup = () => {
     <Container className={inter.className} maxWidth="sm">
       {up && <CustomAlert />}
       {bol && <SuccessBox />}
-      <Stack direction={"row"} display={"flex"} gap={1} alignItems={"center"}>
+      <Stack direction="row" display="flex" gap={1} alignItems="center">
         <IconLeftArrow />
-        <Box component={"p"}>Branch Setup</Box>
+        <Box component="p">Branch Setup</Box>
       </Stack>
       {/* main card */}
       {mainBranch && !load ? (
         <MainCard data={mainBranch} toggleDrawer={toggleDrawer} />
       ) : (
         <>
-          <Skeleton variant="rounded" width={"100%"} height={130} />
+          <Skeleton variant="rounded" width="100%" height={130} />
         </>
       )}
       {/* create-new-branch */}
