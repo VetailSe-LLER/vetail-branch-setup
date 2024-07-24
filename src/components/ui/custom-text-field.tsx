@@ -56,11 +56,7 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
       minRows={minRows}
       fullWidth={fullwidth}
       variant="outlined"
-      label={
-        <Box component={"span"} ml={1}>
-          {label}
-        </Box>
-      }
+      label={<Box component={"span"}>{label}</Box>}
       {...field}
       onBlur={() =>
         field.value ? setLabelShrink(true) : setLabelShrink(false)
@@ -109,7 +105,10 @@ const CustomTextFiled: FC<CustomTextFieldWithLimitProps> = ({
       InputProps={{
         startAdornment: (
           <InputAdornment
-            sx={{ marginTop: minRows > 0 ? -8 : 0 }}
+            sx={{
+              marginTop: minRows > 0 ? -6 : 0,
+              marginLeft: minRows > 0 ? -0.5 : 0,
+            }}
             position="start"
           >
             {icon}
